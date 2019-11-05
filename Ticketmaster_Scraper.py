@@ -1,5 +1,4 @@
 import sys
-
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
@@ -7,7 +6,7 @@ import psycopg2
 import os
 
 url = 'https://www.ticketmaster.ie/browse/hard-rock-metal-catid-200/music-rid-10001'
-oldTablePath = 'C:/Users/James/Documents/venv/npo_ticketmaster_events.csv'
+oldTablePath = 'C:/Users/James/repos/web_scraper/ticketmaster_events.csv'
 
 dictionary = {'key': 'value'}
 print(dictionary)
@@ -16,7 +15,7 @@ print(dictionary)
 
 while True:
 
-    npo_ticketmaster_events = {}
+    ticketmaster_events = {}
     event_no = 0
     response = requests.get(url)
     data = response.text
@@ -32,7 +31,7 @@ while True:
         ticketLink = ticketmaster_concert.find('a').get('href')
 
         event_no += 1
-        npo_ticketmaster_events[event_no] = [name, location, month, day, ticketLink]
+        ticketmaster_events[event_no] = [name, location, month, day, ticketLink]
     break
 print("Total new Events: ", event_no)
 
@@ -44,9 +43,9 @@ print("Total new Events: ", event_no)
 
 try:
     os.remove(oldTablePath)
-    npo_ticketmaster_events_df = pd.DataFrame.from_dict(npo_ticketmaster_events, orient='index', columns=['name', 'location', 'month', 'day', 'ticketLink'])
-    npo_ticketmaster_events_df.head()
-    npo_ticketmaster_events_df.to_csv('npo_ticketmaster_events.csv')
+    ticketmaster_events_df = pd.DataFrame.from_dict(ticketmaster_events, orient='index', columns=['name', 'location', 'month', 'day', 'ticketLink'])
+    ticketmaster_events_df.head()
+    ticketmaster_events_df.to_csv('ticketmaster_events.csv')
 
 except OSError:
     print("Can't delete file at this location: ", oldTablePath)
@@ -66,7 +65,7 @@ ticketLink varchar PRIMARY KEY)""")
 conn.commit()
 
 try:
-    with open('npo_ticketmaster_events.csv', 'r') as f:
+    with open('ticketmaster_events.csv', 'r') as f:
         next(f)
         cur.copy_from(f, 'ticketmaster_event_table', sep=',')
         conn.commit()

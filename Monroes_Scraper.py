@@ -6,7 +6,7 @@ import requests
 import pandas as pd
 
 url = 'https://monroes.ie/events/'
-oldTablePath = 'C:/Users/James/Documents/venv/npo_monroes_events.csv'
+oldTablePath = 'C:/Users/James/repos/web_scraper/monroes_events.csv'
 
 # Create dictionary
 dictionary = {'key': 'value'}
@@ -46,7 +46,7 @@ try:
     os.remove(oldTablePath)
     npo_monroes_events_df = pd.DataFrame.from_dict(npo_monroes_events, orient='index', columns=['Name', 'Location', 'Date', 'Price', 'Tickets'])
     npo_monroes_events_df.head()
-    npo_monroes_events_df.to_csv('npo_monroes_events.csv')
+    npo_monroes_events_df.to_csv('monroes_events.csv')
 except OSError:
     print("Can't delete file as it does not exist")
     sys.exit(1)
@@ -70,7 +70,7 @@ Price varchar,
 Tickets varchar PRIMARY KEY)""")
 
 try:
-    with open('npo_monroes_events.csv', encoding="utf8") as f:
+    with open('monroes_events.csv', encoding="utf8") as f:
         next(f)
         cur.copy_from(f, 'monroes_event_table', sep=',')
         conn.commit()
