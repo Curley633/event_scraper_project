@@ -6,7 +6,7 @@ import requests
 import pandas as pd
 
 url = 'https://monroes.ie/events/'
-oldTablePath = 'C:/Users/James/Documents/venv/npo_monroes_events.csv'
+oldTablePath = 'C:/Users/James/repos/web_scraper/npo_monroes_events.csv'
 
 # Create dictionary
 dictionary = {'key': 'value'}
