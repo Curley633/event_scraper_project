@@ -19,7 +19,7 @@ lc_messages = 'en_US'
 
 while True:
 
-    npo_monroes_events = {}
+    monroes_events = {}
     event_no = 0
     response = requests.get(url)
     data = response.text
@@ -29,36 +29,38 @@ while True:
 
     for monroes_concert in monroes_concerts:
         artistName = monroes_concert.find('span', {'class': 'artisteventsname'}).text
+        # replace commas with dash for multiple artists to avoid csv errors.
+        artistName = artistName.replace(',', '-')
         location = 'Monroes - Galway'
         date = monroes_concert.find('span', {'class': 'artisteventstime'}).text
         price = monroes_concert.find('span', {'class': 'artistseventsprice'}).text
-        ticketLink = monroes_concert.find('a').get("href")
+        eventLink = monroes_concert.find('a').get("href")
 
         event_no += 1
-        npo_monroes_events[event_no] = [artistName, location, date, price, ticketLink]
+        monroes_events[event_no] = [artistName, location, date, price, eventLink]
         # Comment back in for error checking
         # print('Name\n', artistName, '\nLocation\n', location, '\nDate\n', date, '\nPrice\n', price, '\nTickets\n',
-        #       ticketLink, '\n-----')
+        #       eventLink, '\n-----')
     break
 print("Total new Events: ", event_no)
 
 try:
     os.remove(oldTablePath)
-    npo_monroes_events_df = pd.DataFrame.from_dict(npo_monroes_events, orient='index', columns=['Name', 'Location', 'Date', 'Price', 'Tickets'])
-    npo_monroes_events_df.head()
-    npo_monroes_events_df.to_csv('monroes_events.csv')
+    monroes_events_df = pd.DataFrame.from_dict(monroes_events, orient='index', columns=['Name', 'Location', 'Date', 'Price', 'Event'])
+    monroes_events_df.head()
+    monroes_events_df.to_csv('monroes_events.csv')
 except OSError:
-    print("Can't delete file as it does not exist")
+    print("Can't delete file - It may be open")
     sys.exit(1)
 
-conn = psycopg2.connect(user="user", password="0000", host="localhost", port="5432", dbname="EventScraper")
+conn = psycopg2.connect(dbname='EventScraper', user='postgres', password='curley', host='206.189.165.104', port='5432', sslmode='require')
 cur = conn.cursor()
 
-# Comment back in for testing connection to postGreSQL
-# print(conn.get_dsn_parameters(), "\n")
-# cur.execute("SELECT version();")
-# record = cur.fetchone()
-# print("You are connected to - ", record, "\n")
+# Use this for testing connection to postGres
+print(conn.get_dsn_parameters(), "\n")
+cur.execute("SELECT version();")
+record = cur.fetchone()
+print("You are connected to - ", record, "\n")
 
 cur.execute("""DROP TABLE IF EXISTS monroes_event_table;
 CREATE TABLE monroes_event_table(
@@ -67,7 +69,7 @@ Name varchar,
 Location varchar,
 Date varchar,
 Price varchar,
-Tickets varchar PRIMARY KEY)""")
+Event varchar PRIMARY KEY)""")
 
 try:
     with open('monroes_events.csv', encoding="utf8") as f:

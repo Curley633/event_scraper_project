@@ -8,8 +8,10 @@ import os
 url = 'https://www.ticketmaster.ie/browse/hard-rock-metal-catid-200/music-rid-10001'
 oldTablePath = 'C:/Users/James/repos/web_scraper/ticketmaster_events.csv'
 
+# Create dictionary
 dictionary = {'key': 'value'}
 print(dictionary)
+# Update dictionary
 dictionary['new key'] = 'new value'
 print(dictionary)
 
@@ -25,6 +27,8 @@ while True:
 
     for ticketmaster_concert in ticketmaster_concerts:
         name = ticketmaster_concert.find('span', {'class': 'fuisff-3 gAOxsI'}).text
+        # replace commas with dashes for multiple artists to avoid csv errors.
+        name = name.replace(',', '-')
         location = ticketmaster_concert.find('span', {'class': 'fuisff-4 gpeoHh'}).text
         month = ticketmaster_concert.find('div', {'class': 'sc-1se6fet-1 guQGJM'}).text
         day = ticketmaster_concert.find('div', {'class': 'sc-1se6fet-2 NNWNb'}).text
@@ -35,24 +39,23 @@ while True:
     break
 print("Total new Events: ", event_no)
 
-# Comment back in for testing connection to postGreSQL
-# print(conn.get_dsn_parameters(), "\n")
-# cur.execute("SELECT version();")
-# record = cur.fetchone()
-# print("You are connected to - ", record, "\n")
-
 try:
     os.remove(oldTablePath)
     ticketmaster_events_df = pd.DataFrame.from_dict(ticketmaster_events, orient='index', columns=['name', 'location', 'month', 'day', 'ticketLink'])
     ticketmaster_events_df.head()
     ticketmaster_events_df.to_csv('ticketmaster_events.csv')
-
 except OSError:
     print("Can't delete file at this location: ", oldTablePath)
     print("EXITING")
     sys.exit(1)
-conn = psycopg2.connect(user="user", password="0000", host="localhost", port="5432", dbname="EventScraper")
+conn = psycopg2.connect(dbname='EventScraper', user='postgres', password='curley', host='206.189.165.104', port='5432', sslmode='require')
 cur = conn.cursor()
+
+# Use this for testing connection to postGres
+print(conn.get_dsn_parameters(), "\n")
+cur.execute("SELECT version();")
+record = cur.fetchone()
+print("You are connected to - ", record, "\n")
 
 cur.execute("""DROP TABLE IF EXISTS ticketmaster_event_table;
 CREATE TABLE ticketmaster_event_table(
@@ -62,10 +65,9 @@ location varchar,
 month varchar,
 day int,
 ticketLink varchar PRIMARY KEY)""")
-conn.commit()
 
 try:
-    with open('ticketmaster_events.csv', 'r') as f:
+    with open('ticketmaster_events.csv', encoding="utf8") as f:
         next(f)
         cur.copy_from(f, 'ticketmaster_event_table', sep=',')
         conn.commit()

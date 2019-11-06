@@ -24,6 +24,7 @@ while True:
 
     for blabbermouth_article in blabbermouth_articles:
         image = blabbermouth_article.find('img').get('src')
+        # replace commas with dash for multiple artists to avoid csv errors.
         title = blabbermouth_article.find('a').get('title').replace(',', ' - ')
         shortLink = blabbermouth_article.find('a').get('href')
         link = "https://www.blabbermouth.net" + shortLink
@@ -40,17 +41,26 @@ while True:
 print("Total articles: ", article_no)
 
 try:
-    os.remove(oldTablePath)
+    if os.path.exists(oldTablePath):
+        os.remove(oldTablePath)
+    else:
+        print("Unable to locate old file to remove, writing new file to path.")
     blabbermouth_articles_df = pd.DataFrame.from_dict(all_blabbermouth_articles, orient='index',
-                                                      columns=['image', 'title', 'link'])
+                                                  columns=['image', 'title', 'link'])
     blabbermouth_articles_df.head()
     blabbermouth_articles_df.to_csv('blabbermouth_articles.csv')
 except OSError:
     print("Can't delete file at this location: ", oldTablePath)
     print("EXITING")
     sys.exit(1)
-conn = psycopg2.connect(user="user", password="0000", host="localhost", port="5432", dbname="EventScraper")
+conn = psycopg2.connect(dbname='EventScraper', user='postgres', password='curley', host='206.189.165.104', port='5432', sslmode='require')
 cur = conn.cursor()
+
+# Comment back in for testing connection to postGreSQL
+print(conn.get_dsn_parameters(), "\n")
+cur.execute("SELECT version();")
+record = cur.fetchone()
+print("You are connected to - ", record, "\n")
 
 cur.execute("""DROP TABLE IF EXISTS blabbermouth_news_article_table;
 CREATE TABLE blabbermouth_news_article_table(
@@ -58,10 +68,9 @@ index int,
 image varchar,
 title varchar,
 link varchar PRIMARY KEY)""")
-conn.commit()
 
 try:
-    with open('blabbermouth_articles.csv', 'r') as f:
+    with open('blabbermouth_articles.csv', encoding="utf8", mode='r') as f:
         next(f)
         cur.copy_from(f, 'blabbermouth_news_article_table', sep=',')
         conn.commit()
