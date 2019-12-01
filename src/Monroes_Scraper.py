@@ -6,7 +6,7 @@ import requests
 import pandas as pd
 
 url = 'https://monroes.ie/events/'
-oldTablePath = 'C:/Users/James/repos/web_scraper/monroes_events.csv'
+oldTablePath = 'C:/Users/James/repos/event_scraper_project/src/monroes_events.csv'
 
 # Create dictionary
 dictionary = {'key': 'value'}
@@ -45,7 +45,8 @@ while True:
 print("Total new Events: ", event_no)
 
 try:
-    os.remove(oldTablePath)
+    if os.path.exists(oldTablePath):
+        os.remove(oldTablePath)
     monroes_events_df = pd.DataFrame.from_dict(monroes_events, orient='index', columns=['Name', 'Location', 'Date', 'Price', 'Event'])
     monroes_events_df.head()
     monroes_events_df.to_csv('monroes_events.csv')
@@ -76,7 +77,8 @@ try:
         next(f)
         cur.copy_from(f, 'monroes_event_table', sep=',')
         conn.commit()
+        print("Created new table in postgres, View Data using PGAdmin")
 except FileNotFoundError:
-    print("CSV File not found, Line 71")
+    print("CSV File not found")
     print("EXITING")
     sys.exit(1)

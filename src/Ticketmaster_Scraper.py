@@ -40,14 +40,16 @@ while True:
 print("Total new Events: ", event_no)
 
 try:
-    os.remove(oldTablePath)
+    if os.path.exists(oldTablePath):
+        os.remove(oldTablePath)
     ticketmaster_events_df = pd.DataFrame.from_dict(ticketmaster_events, orient='index', columns=['name', 'location', 'month', 'day', 'ticketLink'])
     ticketmaster_events_df.head()
     ticketmaster_events_df.to_csv('ticketmaster_events.csv')
 except OSError:
-    print("Can't delete file at this location: ", oldTablePath)
+    print("ERROR: Can't Write file to this location: ", oldTablePath)
     print("EXITING")
     sys.exit(1)
+
 conn = psycopg2.connect(dbname='EventScraper', user='postgres', password='curley', host='206.189.165.104', port='5432', sslmode='require')
 cur = conn.cursor()
 
@@ -72,7 +74,7 @@ try:
         cur.copy_from(f, 'ticketmaster_event_table', sep=',')
         conn.commit()
 except FileNotFoundError:
-    print("CSV File not found, Line 71")
+    print("CSV File not found")
     print("EXITING")
     sys.exit(1)
 

@@ -43,14 +43,11 @@ print("Total articles: ", article_no)
 try:
     if os.path.exists(oldTablePath):
         os.remove(oldTablePath)
-    else:
-        print("Unable to locate old file to remove, writing new file to path.")
-    blabbermouth_articles_df = pd.DataFrame.from_dict(all_blabbermouth_articles, orient='index',
-                                                  columns=['image', 'title', 'link'])
+    blabbermouth_articles_df = pd.DataFrame.from_dict(all_blabbermouth_articles, orient='index', columns=['image', 'title', 'link'])
     blabbermouth_articles_df.head()
     blabbermouth_articles_df.to_csv('blabbermouth_articles.csv')
 except OSError:
-    print("Can't delete file at this location: ", oldTablePath)
+    print("Can't delete file at this location: ..It may be open.", oldTablePath)
     print("EXITING")
     sys.exit(1)
 conn = psycopg2.connect(dbname='EventScraper', user='postgres', password='curley', host='206.189.165.104', port='5432', sslmode='require')
@@ -75,6 +72,6 @@ try:
         cur.copy_from(f, 'blabbermouth_news_article_table', sep=',')
         conn.commit()
 except FileNotFoundError:
-    print("CSV File not found, Line 71")
+    print("CSV File not found")
     print("EXITING")
     sys.exit(1)
