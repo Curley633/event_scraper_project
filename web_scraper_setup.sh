@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python "Monroes_Scraper.py"
+python3 "Monroes_Scraper.py"
