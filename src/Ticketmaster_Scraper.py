@@ -73,6 +73,7 @@ try:
         next(f)
         cur.copy_from(f, 'ticketmaster_event_table', sep=',')
         conn.commit()
+        print("Created new table in postgres, View Data using PGAdmin or HeidiSQL")
 except FileNotFoundError:
     print("CSV File not found")
     print("EXITING")

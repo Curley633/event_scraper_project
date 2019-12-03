@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import os
 import sys
 import psycopg2
@@ -77,7 +78,7 @@ try:
         next(f)
         cur.copy_from(f, 'monroes_event_table', sep=',')
         conn.commit()
-        print("Created new table in postgres, View Data using PGAdmin")
+        print("Created new table in postgres, View Data using PGAdmin or HeidiSQL")
 except FileNotFoundError:
     print("CSV File not found")
     print("EXITING")

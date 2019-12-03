@@ -71,6 +71,7 @@ try:
         next(f)
         cur.copy_from(f, 'blabbermouth_news_article_table', sep=',')
         conn.commit()
+        print("Created new table in postgres, View Data using PGAdmin or HeidiSQL")
 except FileNotFoundError:
     print("CSV File not found")
     print("EXITING")
