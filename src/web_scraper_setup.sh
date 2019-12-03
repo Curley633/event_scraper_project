@@ -1,2 +1,2 @@
-#!/usr/bin/python
-python "Monroes_Scraper.py"
+#!/bin/bash
+python3 "Monroes_Scraper.py"
