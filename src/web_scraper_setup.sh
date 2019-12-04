@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 "./Monroes_Scraper.py"
+python3 "src/Monroes_Scraper.py"
