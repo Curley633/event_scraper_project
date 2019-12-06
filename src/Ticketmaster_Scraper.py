@@ -5,6 +5,7 @@ import pandas as pd
 import psycopg2
 import os
 
+print("***TICKETMASTER WEB SCRAPER EXECUTING.py***")
 url = 'https://www.ticketmaster.ie/browse/hard-rock-metal-catid-200/music-rid-10001'
 oldTablePath = 'C:/Users/James/repos/web_scraper/ticketmaster_events.csv'
 
