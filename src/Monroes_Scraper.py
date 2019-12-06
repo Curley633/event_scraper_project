@@ -6,15 +6,15 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 
-print("***MONROES WEB SCRAPER EXECUTING.py***")
+print("\n***MONROES WEB SCRAPER EXECUTING.py***")
 url = 'https://monroes.ie/events/'
 oldTablePath = 'C:/Users/James/repos/event_scraper_project/src/monroes_events.csv'
 
 # Create dictionary
 dictionary = {'key': 'value'}
-print(dictionary)
+# print(dictionary)
 # Update dictionary
-dictionary['new key'] = 'new value'
+# dictionary['new key'] = 'new value'
 print(dictionary)
 
 lc_messages = 'en_US'
@@ -60,7 +60,7 @@ conn = psycopg2.connect(dbname='EventScraper', user='postgres', password='curley
 cur = conn.cursor()
 
 # Use this for testing connection to postGres
-print(conn.get_dsn_parameters(), "\n")
+# print(conn.get_dsn_parameters(), "\n")
 cur.execute("SELECT version();")
 record = cur.fetchone()
 print("You are connected to - ", record, "\n")

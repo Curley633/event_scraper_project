@@ -5,7 +5,7 @@ import pandas as pd
 import psycopg2
 import os
 
-print("***BLABBERMOUTH WEB SCRAPER EXECUTING.py***")
+print("***\nBLABBERMOUTH WEB SCRAPER EXECUTING.py***")
 url = 'https://www.blabbermouth.net/news'
 oldTablePath = 'C:/Users/James/repos/web_scraper/blabbermouth_articles.csv'
 
@@ -55,7 +55,7 @@ conn = psycopg2.connect(dbname='EventScraper', user='postgres', password='curley
 cur = conn.cursor()
 
 # Comment back in for testing connection to postGreSQL
-print(conn.get_dsn_parameters(), "\n")
+# print(conn.get_dsn_parameters(), "\n")
 cur.execute("SELECT version();")
 record = cur.fetchone()
 print("You are connected to - ", record, "\n")

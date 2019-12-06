@@ -5,7 +5,7 @@ import pandas as pd
 import psycopg2
 import os
 
-print("***TICKETMASTER WEB SCRAPER EXECUTING.py***")
+print("\n***TICKETMASTER WEB SCRAPER EXECUTING.py***")
 url = 'https://www.ticketmaster.ie/browse/hard-rock-metal-catid-200/music-rid-10001'
 oldTablePath = 'C:/Users/James/repos/web_scraper/ticketmaster_events.csv'
 
@@ -55,7 +55,7 @@ conn = psycopg2.connect(dbname='EventScraper', user='postgres', password='curley
 cur = conn.cursor()
 
 # Use this for testing connection to postGres
-print(conn.get_dsn_parameters(), "\n")
+# print(conn.get_dsn_parameters(), "\n")
 cur.execute("SELECT version();")
 record = cur.fetchone()
 print("You are connected to - ", record, "\n")
