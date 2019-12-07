@@ -5,16 +5,9 @@ import pandas as pd
 import psycopg2
 import os
 
-print("\n***TICKETMASTER WEB SCRAPER EXECUTING.py***\n")
+print("\n******TICKETMASTER WEB SCRAPER EXECUTING******")
 url = 'https://www.ticketmaster.ie/browse/hard-rock-metal-catid-200/music-rid-10001'
 oldTablePath = 'C:/Users/James/repos/web_scraper/ticketmaster_events.csv'
-
-# Create dictionary
-dictionary = {'key': 'value'}
-print(dictionary)
-# Update dictionary
-dictionary['new key'] = 'new value'
-print(dictionary)
 
 while True:
 
@@ -58,7 +51,7 @@ cur = conn.cursor()
 # print(conn.get_dsn_parameters(), "\n")
 cur.execute("SELECT version();")
 record = cur.fetchone()
-print("You are connected to - ", record, "\n")
+print("You are connected to - ", record)
 
 cur.execute("""DROP TABLE IF EXISTS ticketmaster_event_table;
 CREATE TABLE ticketmaster_event_table(

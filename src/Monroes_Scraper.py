@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import os
 import sys
 import psycopg2
@@ -6,16 +5,9 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 
-print("\n***MONROES WEB SCRAPER EXECUTING.py***\n")
+print("\n******MONROES WEB SCRAPER EXECUTING******")
 url = 'https://monroes.ie/events/'
 oldTablePath = 'C:/Users/James/repos/event_scraper_project/src/monroes_events.csv'
-
-# Create dictionary
-dictionary = {'key': 'value'}
-# print(dictionary)
-# Update dictionary
-# dictionary['new key'] = 'new value'
-print(dictionary)
 
 lc_messages = 'en_US'
 
@@ -63,7 +55,7 @@ cur = conn.cursor()
 # print(conn.get_dsn_parameters(), "\n")
 cur.execute("SELECT version();")
 record = cur.fetchone()
-print("You are connected to - ", record, "\n")
+print("You are connected to - ", record)
 
 cur.execute("""DROP TABLE IF EXISTS monroes_event_table;
 CREATE TABLE monroes_event_table(

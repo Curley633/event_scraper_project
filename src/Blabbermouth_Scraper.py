@@ -5,14 +5,9 @@ import pandas as pd
 import psycopg2
 import os
 
-print("\n***BLABBERMOUTH WEB SCRAPER EXECUTING.py***\n")
+print("\n******BLABBERMOUTH WEB SCRAPER EXECUTING******")
 url = 'https://www.blabbermouth.net/news'
 oldTablePath = 'C:/Users/James/repos/web_scraper/blabbermouth_articles.csv'
-
-dictionary = {'key': 'value'}
-print(dictionary)
-dictionary['new key'] = 'new value'
-print(dictionary)
 
 all_blabbermouth_articles = {}
 article_no = 0
@@ -58,7 +53,7 @@ cur = conn.cursor()
 # print(conn.get_dsn_parameters(), "\n")
 cur.execute("SELECT version();")
 record = cur.fetchone()
-print("You are connected to - ", record, "\n")
+print("You are connected to - ", record)
 
 cur.execute("""DROP TABLE IF EXISTS blabbermouth_news_article_table;
 CREATE TABLE blabbermouth_news_article_table(
