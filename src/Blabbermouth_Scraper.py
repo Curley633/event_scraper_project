@@ -5,7 +5,7 @@ import pandas as pd
 import psycopg2
 import os
 
-print("***\nBLABBERMOUTH WEB SCRAPER EXECUTING.py***")
+print("\n***BLABBERMOUTH WEB SCRAPER EXECUTING.py***\n")
 url = 'https://www.blabbermouth.net/news'
 oldTablePath = 'C:/Users/James/repos/web_scraper/blabbermouth_articles.csv'
 

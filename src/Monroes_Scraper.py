@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 
-print("\n***MONROES WEB SCRAPER EXECUTING.py***")
+print("\n***MONROES WEB SCRAPER EXECUTING.py***\n")
 url = 'https://monroes.ie/events/'
 oldTablePath = 'C:/Users/James/repos/event_scraper_project/src/monroes_events.csv'
 
