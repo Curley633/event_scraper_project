@@ -5,14 +5,9 @@ import pandas as pd
 import psycopg2
 import os
 
-print("\n***BLABBERMOUTH WEB SCRAPER EXECUTING.py***\n")
+print("\n******BLABBERMOUTH WEB SCRAPER EXECUTING******\n")
 url = 'https://www.blabbermouth.net/news'
 oldTablePath = 'C:/Users/James/repos/web_scraper/blabbermouth_articles.csv'
-
-dictionary = {'key': 'value'}
-print(dictionary)
-dictionary['new key'] = 'new value'
-print(dictionary)
 
 all_blabbermouth_articles = {}
 article_no = 0

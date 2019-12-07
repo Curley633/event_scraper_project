@@ -6,16 +6,9 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 
-print("\n***MONROES WEB SCRAPER EXECUTING.py***\n")
+print("\n******MONROES WEB SCRAPER EXECUTING******\n")
 url = 'https://monroes.ie/events/'
 oldTablePath = 'C:/Users/James/repos/event_scraper_project/src/monroes_events.csv'
-
-# Create dictionary
-dictionary = {'key': 'value'}
-# print(dictionary)
-# Update dictionary
-# dictionary['new key'] = 'new value'
-print(dictionary)
 
 lc_messages = 'en_US'
 
