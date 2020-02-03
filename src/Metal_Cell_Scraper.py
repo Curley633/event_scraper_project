@@ -40,14 +40,14 @@ while True:
         data = response.text
         soup = BeautifulSoup(data, 'html.parser')
         podcastMp3 = soup.find(property='og:audio:secure_url').get('content')
-        print(podcastMp3)
+        # print(podcastMp3)
 
         podcasts_count += 1
         metal_cell_podcasts[podcasts_count] = [episode_title, date, duration, episode_full_url, podcastMp3]
 
         # comment back in for testing
-        print('Title:\n', episode_title, '\nDate:\n', date, '\nDuration\n', duration, '\nLink to page:\n', episode_full_url,
-              '\nMP3:', podcastMp3, '\n-----')
+        # print('Title:\n', episode_title, '\nDate:\n', date, '\nDuration\n', duration, '\nLink to page:\n', episode_full_url,
+        #       '\nMP3:', podcastMp3, '\n-----')
 
     break
 
