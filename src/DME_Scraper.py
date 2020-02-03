@@ -2,7 +2,6 @@ import sys
 import os
 from bs4 import BeautifulSoup
 import requests
-import re
 import pandas as pd
 import psycopg2
 
@@ -28,7 +27,7 @@ while True:
         dme_events[event_no] = [title, details, link]
 
         # comment back in for testing
-        print('Event\n', title, '\nEvent Page:', link, '\nDetails:', details, '\n---')
+        # print('Event\n', title, '\nEvent Page:', link, '\nDetails:', details, '\n---')
 
     break
 
