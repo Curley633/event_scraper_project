@@ -12,7 +12,7 @@ oldTablePath = 'C:/Users/James/repos/web_scraper/blabbermouth_articles.csv'
 all_blabbermouth_articles = {}
 article_no = 0
 
-while True:
+while article_no <= 100:
     response = requests.get(url)
     data = response.text
     soup = BeautifulSoup(data, 'html.parser')
@@ -24,6 +24,7 @@ while True:
         title = blabbermouth_article.find('a').get('title').replace(',', ' - ')
         shortLink = blabbermouth_article.find('a').get('href')
         link = "https://www.blabbermouth.net" + shortLink
+        print(title)
 
         article_no += 1
         all_blabbermouth_articles[article_no] = [image, title, link]
@@ -35,6 +36,7 @@ while True:
         print("END OF LAST PAGE")
         break
 print("Total articles: ", article_no)
+
 
 try:
     if os.path.exists(oldTablePath):
