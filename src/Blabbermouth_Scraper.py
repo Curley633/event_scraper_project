@@ -7,7 +7,7 @@ import os
 
 print("\n******BLABBERMOUTH WEB SCRAPER EXECUTING******")
 url = 'https://www.blabbermouth.net/news'
-oldTablePath = 'C:/Users/James/repos/web_scraper/blabbermouth_articles.csv'
+oldTablePath = 'C:/Users/James/repos/event_scraper_project/src/blabbermouth_articles.csv'
 
 all_blabbermouth_articles = {}
 article_no = 0
@@ -19,15 +19,18 @@ while article_no <= 100:
     blabbermouth_articles = soup.find_all('article', {'class': 'category-news'})
 
     for blabbermouth_article in blabbermouth_articles:
-        image = blabbermouth_article.find('img').get('src')
         # replace commas with dash for multiple artists to avoid csv errors.
         title = blabbermouth_article.find('a').get('title').replace(',', ' - ')
+        pre_date = blabbermouth_article.find('span').text.strip()
+        date = pre_date.replace(',', ' - ')
         shortLink = blabbermouth_article.find('a').get('href')
         link = "https://www.blabbermouth.net" + shortLink
         print(title)
+        print(date)
+        print(link)
 
         article_no += 1
-        all_blabbermouth_articles[article_no] = [image, title, link]
+        all_blabbermouth_articles[article_no] = [title, date, link]
 
     next_page_tag = soup.find('a', {'class': 'next_page'})
     if next_page_tag and next_page_tag.get('href'):
@@ -41,7 +44,7 @@ print("Total articles: ", article_no)
 try:
     if os.path.exists(oldTablePath):
         os.remove(oldTablePath)
-    blabbermouth_articles_df = pd.DataFrame.from_dict(all_blabbermouth_articles, orient='index', columns=['image', 'title', 'link'])
+    blabbermouth_articles_df = pd.DataFrame.from_dict(all_blabbermouth_articles, orient='index', columns=['title', 'date', 'link'])
     blabbermouth_articles_df.head()
     blabbermouth_articles_df.to_csv('blabbermouth_articles.csv')
 except OSError:
@@ -60,8 +63,8 @@ print("You are connected to - ", record)
 cur.execute("""DROP TABLE IF EXISTS blabbermouth_news_article_table;
 CREATE TABLE blabbermouth_news_article_table(
 index int,
-image varchar,
 title varchar,
+date varchar,
 link varchar PRIMARY KEY)""")
 
 try:
