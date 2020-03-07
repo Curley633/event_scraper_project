@@ -4,6 +4,13 @@ import requests
 import pandas as pd
 import psycopg2
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_USER")
+db_pword = os.getenv("DB_PWORD")
+db_host = os.getenv("DB_HOST")
 
 print("\n******TICKETMASTER WEB SCRAPER EXECUTING******")
 url = 'https://www.ticketmaster.ie/browse/hard-rock-metal-catid-200/music-rid-10001'
@@ -16,20 +23,21 @@ while True:
     response = requests.get(url)
     data = response.text
     soup = BeautifulSoup(data, 'html.parser')
-    ticketmaster_concerts = soup.find_all('li', {'class': 'sc-17c7lsa-1 iMroit'})
+    ticketmaster_concerts = soup.find_all('li', {'class': 'sc-17c7lsa-1 kMlhUL'})
     print(response)
 
     for ticketmaster_concert in ticketmaster_concerts:
-        name = ticketmaster_concert.find('span', {'class': 'fuisff-3 gAOxsI'}).text
+        artist = ticketmaster_concert.find('span', {'class': 'fuisff-3 bWKPkY'}).text
         # replace commas with dashes for multiple artists to avoid csv errors.
-        name = name.replace(',', '-')
-        location = ticketmaster_concert.find('span', {'class': 'fuisff-4 gpeoHh'}).text
-        month = ticketmaster_concert.find('div', {'class': 'sc-1se6fet-1 guQGJM'}).text
-        day = ticketmaster_concert.find('div', {'class': 'sc-1se6fet-2 NNWNb'}).text
+        artist = artist.replace(',', '-')
+        location = ticketmaster_concert.find('span', {'class': 'fuisff-4 gWMnZL'}).text
+        month = ticketmaster_concert.find('div', {'class': 'sc-1se6fet-1 exbPiQ'}).text
+        day = ticketmaster_concert.find('div', {'class': 'sc-1se6fet-2 eeiZWg'}).text
         ticketLink = ticketmaster_concert.find('a').get('href')
 
         event_no += 1
-        ticketmaster_events[event_no] = [name, location, month, day, ticketLink]
+        ticketmaster_events[event_no] = [artist, location, month, day, ticketLink]
+        # print(artist, location, month, day, ticketLink)
     break
 print("Total new Events: ", event_no)
 
@@ -44,7 +52,7 @@ except OSError:
     print("EXITING")
     sys.exit(1)
 
-conn = psycopg2.connect(dbname='EventScraper', user='postgres', password='curley', host='206.189.165.104', port='5432', sslmode='require')
+conn = psycopg2.connect(dbname=db_name, user=db_user, password=db_pword, host=db_host, port='5432', sslmode='require')
 cur = conn.cursor()
 
 # Use this for testing connection to postGres

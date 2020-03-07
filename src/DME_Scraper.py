@@ -4,6 +4,13 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 import psycopg2
+from dotenv import load_dotenv
+
+load_dotenv()
+db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_USER")
+db_pword = os.getenv("DB_PWORD")
+db_host = os.getenv("DB_HOST")
 
 print("\n******DME WEB SCRAPER EXECUTING******")
 url = 'https://dme-promotions.com/events'
@@ -16,7 +23,6 @@ while True:
     data = response.text
     soup = BeautifulSoup(data, 'html.parser')
     concerts = soup.find_all('div', {'class': 'description'})
-    images = soup.find_all('div', {'class': 'featured-image'})
 
     for concert in concerts:
         title = concert.find('a').text
@@ -28,7 +34,6 @@ while True:
 
         # comment back in for testing
         # print('Event\n', title, '\nEvent Page:', link, '\nDetails:', details, '\n---')
-
     break
 
 try:
@@ -41,7 +46,8 @@ except OSError:
     print("Can't delete file at this location: ..It may be open.", oldTablePath)
     print("EXITING")
     sys.exit(1)
-conn = psycopg2.connect(dbname='EventScraper', user='postgres', password='curley', host='206.189.165.104', port='5432', sslmode='require')
+print(event_no)
+conn = psycopg2.connect(dbname=db_name, user=db_user, password=db_pword, host=db_host, port='5432', sslmode='require')
 cur = conn.cursor()
 
 # Comment back in for testing connection to postGreSQL

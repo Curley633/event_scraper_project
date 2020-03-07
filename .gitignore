@@ -6,7 +6,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-venv/*.csv
+*.csv
 
 # C extensions
 *.so
@@ -166,7 +166,8 @@ fabric.properties
 
 ## Directory-based project format:
 .idea/
-# if you remove the above rule, at least ignore the following:
+
+.env
 
 # User-specific stuff:
 # .idea/workspace.xml
@@ -199,9 +200,6 @@ fabric.properties
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
-
-# JIRA plugin
-atlassian-ide-plugin.xml
 
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml

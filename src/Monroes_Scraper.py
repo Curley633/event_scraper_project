@@ -4,6 +4,13 @@ import psycopg2
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
+from dotenv import load_dotenv
+
+load_dotenv()
+name = os.getenv("DB_NAME")
+user = os.getenv("DB_USER")
+pword = os.getenv("DB_PWORD")
+host = os.getenv("DB_HOST")
 
 print("\n******MONROES WEB SCRAPER EXECUTING******")
 url = 'https://monroes.ie/events/'
@@ -22,16 +29,18 @@ while True:
     monroes_concerts = soup.find_all('div', {'class': 'flexmedia flexmedia--artistevents'})
 
     for monroes_concert in monroes_concerts:
-        artistName = monroes_concert.find('span', {'class': 'artisteventsname'}).text
+        artistName = monroes_concert.find('a', {'class': 'artisteventsname'}).text
         # replace commas with dash for multiple artists to avoid csv errors.
         artistName = artistName.replace(',', '-')
+        print(artistName)
         location = 'Monroes - Galway'
-        date = monroes_concert.find('span', {'class': 'artisteventstime'}).text
-        price = monroes_concert.find('span', {'class': 'artistseventsprice'}).text
-        eventLink = monroes_concert.find('a').get("href")
+        date = monroes_concert.find('span').text
+        print(date)
+        # price = monroes_concert.find('span', {'class': 'artistseventsprice'}).text
+        # eventLink = monroes_concert.find('a').get("href")
 
         event_no += 1
-        monroes_events[event_no] = [artistName, location, date, price, eventLink]
+        # monroes_events[event_no] = [artistName, location, date, price, eventLink]
         # Comment back in for error checking
         # print('Name\n', artistName, '\nLocation\n', location, '\nDate\n', date, '\nPrice\n', price, '\nTickets\n',
         #       eventLink, '\n-----')
@@ -48,7 +57,7 @@ except OSError:
     print("Can't delete file - It may be open")
     sys.exit(1)
 
-conn = psycopg2.connect(dbname='EventScraper', user='postgres', password='curley', host='206.189.165.104', port='5432', sslmode='require')
+conn = psycopg2.connect(dbname=name, user=user, password=pword, host=host, port='5432', sslmode='require')
 cur = conn.cursor()
 
 # Use this for testing connection to postGres

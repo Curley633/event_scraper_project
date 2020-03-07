@@ -4,6 +4,13 @@ import requests
 import pandas as pd
 import psycopg2
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_USER")
+db_pword = os.getenv("DB_PWORD")
+db_host = os.getenv("DB_HOST")
 
 print("\n******BLABBERMOUTH WEB SCRAPER EXECUTING******")
 url = 'https://www.blabbermouth.net/news'
@@ -25,9 +32,9 @@ while article_no <= 100:
         date = pre_date.replace(',', ' - ')
         shortLink = blabbermouth_article.find('a').get('href')
         link = "https://www.blabbermouth.net" + shortLink
-        print(title)
-        print(date)
-        print(link)
+        # print(title)
+        # print(date)
+        # print(link)
 
         article_no += 1
         all_blabbermouth_articles[article_no] = [title, date, link]
@@ -51,7 +58,7 @@ except OSError:
     print("Can't delete file at this location: ..It may be open.", oldTablePath)
     print("EXITING")
     sys.exit(1)
-conn = psycopg2.connect(dbname='EventScraper', user='postgres', password='curley', host='206.189.165.104', port='5432', sslmode='require')
+conn = psycopg2.connect(dbname=db_name, user=db_user, password=db_pword, host=db_host, port='5432', sslmode='require')
 cur = conn.cursor()
 
 # Comment back in for testing connection to postGreSQL
