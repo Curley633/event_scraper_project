@@ -7,9 +7,6 @@ check_scraper_source() {
     elif [[ ${scraper_source} == "BLABBERMOUTH" ]]; then
         echo "SCRAPER SOURCE = ${scraper_source} SCRAPER"
         python3 "src/Blabbermouth_Scraper.py"
-    elif [[ ${scraper_source} == "TICKETMASTER" ]]; then
-        echo "SCRAPER SOURCE = ${scraper_source} SCRAPER"
-        python3 "src/Ticketmaster_Scraper.py"
     elif [[ ${scraper_source} == "METALCELL" ]]; then
         echo "SCRAPER SOURCE = ${scraper_source} SCRAPER"
         python3 "src/Metal_Cell_Scraper.py"
@@ -20,7 +17,6 @@ check_scraper_source() {
         echo "RUNNING ALL SCRAPERS"
         python3 "src/DME_Scraper.py"
         python3 "src/Monroes_Scraper.py"
-        python3 "src/Ticketmaster_Scraper.py"
         python3 "src/Blabbermouth_Scraper.py"
         python3 "src/Metal_Cell_Scraper.py"
     fi
